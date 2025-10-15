@@ -65,7 +65,11 @@ class TaskController extends Controller
         $data = $request->validate([
             'title' => 'required|string|unique:tasks,title,' . $task->id,
             'description' => 'nullable',
-            'status' => 'required|in:Incomplete,Complete',
+            'status' => 'required|in:' . 
+                implode(
+                    ',', 
+                    collect(TaskStatus::cases()
+                )->pluck('value')->all()),
         ]);
 
         $this->repository->update($id, $data);
