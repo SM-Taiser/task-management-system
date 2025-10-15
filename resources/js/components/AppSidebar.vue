@@ -1,23 +1,22 @@
 <script setup lang="ts">
-import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
+import { BookOpen, Folder } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
-const mainNavItems: NavItem[] = [
+const mainNavItems = [
     {
         title: 'Dashboard',
         href: '/dashboard',
-        icon: LayoutGrid,
+        icon: 'fa-solid fa-grip',
     },
     {
         title: 'Task',
         href: '/tasks',
-        icon: LayoutGrid,
+        icon: 'fa-solid fa-list-check',
     },
 ];
 
@@ -59,3 +58,10 @@ const footerNavItems: NavItem[] = [
     </Sidebar>
     <slot />
 </template>
+
+<style scoped>
+[data-slot="sidebar-menu-button"]:hover {
+    background-color: unset;
+}
+</style>
+

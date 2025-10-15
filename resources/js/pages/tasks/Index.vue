@@ -89,6 +89,10 @@ function deleteTask(id) {
   }
 }
 
+function limitString(str, maxLength = 20) {
+  return str.length > maxLength ? str.slice(0, maxLength) + '...' : str;
+}
+
 const incompleteTasks = computed(() => props.tasks?.filter(t => t.status === 'Incomplete'))
 const doneTasks = computed(() => props.tasks?.filter(t => t.status === 'Complete'))
 const todos = computed(() => props.tasks?.filter(t => t.status === 'Todo'))
@@ -100,87 +104,108 @@ const todos = computed(() => props.tasks?.filter(t => t.status === 'Todo'))
     <div class="p-6">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-bold text-gray-800">Tasks</h2>
-          <Toast :key :message="flashMessage" type="success" />
-          <div class="grid grid-cols-3 gap-4">
-              <div class="p-4">
-                <select
-                    v-model="selectedFilter"
-                    @change="changeFilter"
-                    class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500"
-                    >
-                    <option value="">Filter Status</option>
-                    <option v-for="value in status" :key="value" :value="value">
-                      {{ value }}
-                    </option>
-                </select>
-              </div>
-              <div class="p-4">
-                <button @click="openCreateModal"
-                  class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-                  + New Task
+          <Toast v-if="flashMessage" :key :message="flashMessage" type="success" />
+          <div class="flex justify-between items-center gap-4">
+            <!-- Filter Dropdown -->
+            <div>
+              <select
+                v-model="selectedFilter"
+                @change="changeFilter"
+                class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="">Filter Status</option>
+                <option v-for="value in status" :key="value" :value="value">
+                  {{ value }}
+                </option>
+              </select>
+            </div>
+
+            <!-- New Task Button -->
+            <div>
+              <button
+                @click="openCreateModal"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+              >
+                <i class="fa-solid fa-plus"></i>
+                New Task
               </button>
-              </div>
+            </div>
           </div>
         </div>
 
         <!-- Task Board -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-           <!-- In Progress -->
-        <div class="bg-orange-50 border border-orange-200 rounded-xl p-4">
-            <h3 class="font-semibold text-orange-800 mb-4 flex items-center gap-2">
-            ⚙️ Todo
-            </h3>
-            <div v-for="task in todos" :key="task.id" class="bg-white rounded-lg p-4 shadow mb-3">
-            <p class="text-gray-700">{{ task.title }}</p>
-            <p class="text-gray-500 text-sm mt-1">{{ task.description }}</p>
-            <div class="flex justify-end gap-2 mt-3">
-                <button @click="openEditModal(task)" class="text-gray-500 hover:text-blue-600">
-                Edit
-                </button>
-                <button @click="deleteTask(task.id)" class="text-gray-500 hover:text-red-600">
-                  Delete
-                </button>
+           <!-- TODO -->
+        <div class="light-blue p-4 rounded-lg">
+        <h2 class="text-lg font-semibold mb-4 flex items-center text-blue-800">
+          <i class="fa-regular fa-square mr-2"></i>
+          To do
+        </h2>
+        <div v-for="task in todos" :key="task.id" class="bg-white rounded-lg shadow mb-3 p-4">
+          <div class="flex items-start">
+            <div class="flex-1">
+              <p class="text-gray-700 font-medium">{{ limitString(task.title, 20) }}</p>
+              <p class="text-gray-500 text-sm">{{ limitString(task.description, 20) }}</p>
             </div>
+            <div class="flex space-x-2 ml-4">
+              <button @click="openEditModal(task)" class="text-gray-500 hover:text-blue-600">
+                <i class="fas fa-pen"></i>
+              </button>
+              <button @click="deleteTask(task.id)" class="text-gray-500 hover:text-red-600">
+                <i class="fas fa-trash"></i>
+              </button>
             </div>
+          </div>
+        </div>
         </div>
 
-        <!-- In Progress -->
-        <div class="bg-orange-50 border border-orange-200 rounded-xl p-4">
-            <h3 class="font-semibold text-orange-800 mb-4 flex items-center gap-2">
-            ⚙️ In Complete
-            </h3>
-            <div v-for="task in incompleteTasks" :key="task.id" class="bg-white rounded-lg p-4 shadow mb-3">
-            <p class="text-gray-700">{{ task.title }}</p>
-            <p class="text-gray-500 text-sm mt-1">{{ task.description }}</p>
-            <div class="flex justify-end gap-2 mt-3">
-                <button @click="openEditModal(task)" class="text-gray-500 hover:text-blue-600">
-                Edit
-                </button>
-                <button @click="deleteTask(task.id)" class="text-gray-500 hover:text-red-600">
-                  Delete
-                </button>
+        <!-- In complete -->
+        <div class="peach-light p-4 rounded-lg">
+        <h2 class="text-lg font-semibold mb-4 flex items-center text-[#8F4F00]">
+          <i class="fa-solid fa-hourglass-half mr-2"></i>
+          In complete
+        </h2>
+        <div v-for="task in incompleteTasks" :key="task.id" class="bg-white rounded-lg shadow mb-3 p-4">
+          <div class="flex items-start">
+            <div class="flex-1">
+              <p class="text-gray-700 font-medium">{{ limitString(task.title, 20) }}</p>
+              <p class="text-gray-500 text-sm">{{ limitString(task.description, 20) }}</p>
             </div>
+            <div class="flex space-x-2 ml-4">
+              <button @click="openEditModal(task)" class="text-gray-500 hover:text-blue-600">
+                <i class="fas fa-pen"></i>
+              </button>
+              <button @click="deleteTask(task.id)" class="text-gray-500 hover:text-red-600">
+                <i class="fas fa-trash"></i>
+              </button>
             </div>
+          </div>
+        </div>
         </div>
 
         <!-- Done -->
-        <div class="bg-rose-50 border border-rose-200 rounded-xl p-4">
-            <h3 class="font-semibold text-rose-800 mb-4 flex items-center gap-2">
-            ✅ Done
-            </h3>
-            <div v-for="task in doneTasks" :key="task.id" class="bg-white rounded-lg p-4 shadow mb-3">
-            <p class="text-gray-700">{{ task.title }}</p>
-            <p class="text-gray-500 text-sm mt-1">{{ task.description }}</p>
-            <div class="flex justify-end gap-2 mt-3">
-                <button @click="openEditModal(task)" class="text-gray-500 hover:text-blue-600">
-                Edit
-                </button>
-                <button @click="deleteTask(task.id)" class="text-gray-500 hover:text-red-600">
-                Delete
-                </button>
+         <div class="orange-light 200 p-4 rounded-lg">
+        <h2 class="text-lg font-semibold mb-4 flex items-center text-[#81290E]">
+         <i class="fa-regular fa-square-check mr-2"></i>
+          Done
+        </h2>
+        <div v-for="task in doneTasks" :key="task.id" class="bg-white rounded-lg shadow mb-3 p-4">
+          <div class="flex items-start">
+            <div class="flex-1">
+              <p class="text-gray-700 font-medium">{{ limitString(task.title, 20) }}</p>
+              <p class="text-gray-500 text-sm">{{ limitString(task.description, 20) }}</p>
             </div>
+            <div class="flex space-x-2 ml-4">
+              <button @click="openEditModal(task)" class="text-gray-500 hover:text-blue-600">
+                <i class="fas fa-pen"></i>
+              </button>
+              <button @click="deleteTask(task.id)" class="text-gray-500 hover:text-red-600">
+                <i class="fas fa-trash"></i>
+              </button>
             </div>
+          </div>
+        </div>
         </div>
         </div>
 
@@ -335,3 +360,15 @@ const todos = computed(() => props.tasks?.filter(t => t.status === 'Todo'))
     </div>
     </AppLayout>
 </template>
+
+<style scoped>
+.peach-light {
+  background-color: #FFE4C2;
+}
+.light-blue {
+  background-color: #CAD9F6;
+}
+.orange-light {
+  background-color: #FAD0C6;
+}
+</style>

@@ -14,15 +14,18 @@ const page = usePage();
     <SidebarGroup class="px-2 py-0">
         <SidebarMenu>
             <SidebarMenuItem v-for="item in items" :key="item.title">
-                <SidebarMenuButton as-child :is-active="item.href === page.url" :tooltip="item.title">
+                <SidebarMenuButton as-child :is-active="page.url.startsWith(item.href)" :tooltip="item.title" class="pt-2">
                     <Link :href="item.href" :class="[
-                        'flex items-center gap-2 rounded-md px-3 py-2 transition-colors duration-200',
-                        item.href === page.url
+                        'flex items-center gap-2 rounded-md pt-2 px-3 py-2 transition-colors',
+                        page.url.startsWith(item.href)
                             ? 'bg-[#2563DC] text-white'
-                            : 'text-[#14367B] hover:bg-[#14367B]/10 hover:text-[#14367B]'
+                            : 'bg-[#EEF2FC] text-[#14367B] hover:bg-[#14367B]/10 hover:text-white'
                         ]">
-                        <component :is="item.icon" />
-                        <span class="text-[#14367B]">{{ item.title }}</span>
+                       <i :class="[item.icon, page.url.startsWith(item.href) ? 'text-white' : 'text-[#14367B]']"></i>
+                        
+                        <span :class="[page.url.startsWith(item.href) ? 'text-white' : 'text-[#14367B]']">
+                            {{ item.title }}
+                        </span>    
                     </Link>
                 </SidebarMenuButton>
             </SidebarMenuItem>

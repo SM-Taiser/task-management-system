@@ -24,7 +24,7 @@ const { isMobile, state } = useSidebar();
             <DropdownMenu>
                 <Link class="block w-full bg-[#FDF0EC] hover:bg-[#FDF0EC] text-[#81290E] font-medium px-4 py-2 rounded-md transition duration-200"
                    method="post" :href="route('logout')" @click="handleLogout" as="button">
-                    Log out
+                   <i class="fa-solid fa-right-from-bracket"></i> Log out
                 </Link>
             </DropdownMenu>
         </SidebarMenuItem>
