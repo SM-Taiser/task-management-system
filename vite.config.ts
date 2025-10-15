@@ -27,7 +27,7 @@ export default defineConfig({
         },
     },
     server: {
-      host: 'lara-12.local',   //  use your custom local domain
+      host: 'task.local',   //  use your custom local domain
       port: 5173,
     },
 });
