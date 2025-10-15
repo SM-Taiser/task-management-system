@@ -1,6 +1,6 @@
 # Task Management System — Laravel 12 + Inertia + Vue 3 + TailwindCSS
 
-A modern Task Management System built with **Laravel 12**, **Inertia.js**, **Vue 3**, and **Tailwind CSS**, following the **Repository Pattern**.  
+A modern Task Management System built with **Laravel 12**, **Inertia.js**, **Vue 3**, **Font Awesome** and **Tailwind CSS**, following the **Repository Pattern**.  
 Includes **Authentication**, **Role-based Access Control (ACL)**, **RESTful API (Laravel Sanctum)**, and **Background Jobs** for email notifications.
 
 ---
@@ -31,14 +31,19 @@ Includes **Authentication**, **Role-based Access Control (ACL)**, **RESTful API 
 - Laravel 12  
 ---
 
-## ⚙️ Installation & Setup
+## Installation & Setup
 
 ### Clone the Repository
 git clone https://github.com/SM-Taiser/task-management-system.git
 cd task-management-system ```
 
 ### Create Local Domain
-Cretae a local domain (task.local) in your device
+Cretae a local domain (task.local) in your device. Also this domain need to update in vite.config.ts file..
+```js
+server {
+    host: 'task.local'
+}
+```
 
 ### Install Dependencies
 - **composer install**
