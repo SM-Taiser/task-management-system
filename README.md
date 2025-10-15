@@ -94,6 +94,15 @@ php artisan queue:work
 
 ### RESTful API Endpoints (Sanctum)
 
+Laravel Sanctum provides a simple way to issue API tokens to users so they can authenticate securely — typically for mobile apps, SPA frontends, or external clients.
+<br> Example:
+
+```js 
+GET /api/tasks
+Authorization: Bearer 1|u4Fi2PjqVfY9yOeWKg2GJ2mB3dG7N8qU0a2RMCsE
+Accept: application/json
+```
+
 #### Authentication
 | Method | Endpoint      | Description                |
 | ------ | ------------- | -------------------------- |
